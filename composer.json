@@ -1,17 +1,8 @@
 {
-    "type": "package",
-    "package": {
-        "name": "iwalkalone/Translator",
-        "version": "dev-master",
-        "source": {
-            "url": "git://github.com/iwalkalone69/Translator",
-            "type": "git",
-            "reference": "master"
-        },
-        "autoload": {
-            "psr-0" : {
-                "iwalkalone\\Translator" : "src"
-            }
+    "name": "iwalkalone/Translator",
+    "autoload": {
+        "psr-0" : {
+            "iwalkalone\\Translator" : "src"
         }
     }
 }
