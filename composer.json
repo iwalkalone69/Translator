@@ -1,5 +1,5 @@
 {
-    "name": "iwalkalone/Translator",
+    "name": "iwalkalone/translator",
     "autoload": {
         "psr-0" : {
             "iwalkalone\\Translator" : "src"
