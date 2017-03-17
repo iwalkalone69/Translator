@@ -1,0 +1,4 @@
+class_name: LibraryTester
+modules:
+    enabled:
+        - \Helper\Library
