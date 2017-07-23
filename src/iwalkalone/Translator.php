@@ -30,8 +30,8 @@ class Translator
     public function __construct(array $available_languages, $default_language, $directory = '.', $language = null)
     {
         $this->setAvailableLanguages($available_languages);
-	$this->setDefaultLanguage($default_language);
-	$this->setDirectory($directory);
+        $this->setDefaultLanguage($default_language);
+        $this->setDirectory($directory);
         if (!function_exists('gettext')) {
             throw new \Exception('FATAL: GetText is not available!');
         }
@@ -63,7 +63,7 @@ class Translator
     {
 	$this->default_language = $default_language;
     }
-    
+
     /**
      * Sets directory where translations are
      */
@@ -110,8 +110,10 @@ class Translator
     public function translate($str, $placeholders = null)
     {
         $message = gettext($str);
-        foreach ($placeholders as $key => $value) {
-            $message = str_replace('%'.$key.'%', $value, $message);
+        if ($placeholders && is_array($placeholders)) {
+            foreach ($placeholders as $key => $value) {
+                $message = str_replace('%'.$key.'%', $value, $message);
+            }
         }
 
         return $message;
