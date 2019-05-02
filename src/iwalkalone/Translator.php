@@ -83,7 +83,7 @@ class Translator
     /**
      * Selects a new language
      */
-    protected function setLanguage($language)
+    public function setLanguage($language)
     {
         $this->selected_language = $language;
         $result = putenv('LANGUAGE='.$this->selected_language.'.utf8');
