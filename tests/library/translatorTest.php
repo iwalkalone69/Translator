@@ -24,13 +24,13 @@ class translatorTest extends \Codeception\Test\Unit
 
     public function testTranslationCustomLang()
     {
-        $translator = new iwalkalone\Translator(['en_GB', 'en_US', 'ca_ES', 'es_ES'], 'es_ES', __DIR__.'/../../I18N', 'en_GB');
+        $translator = new iwalkalone\Translator(['en_GB', 'en_US', 'ca_ES', 'es_ES'], 'es_ES', __DIR__.'/../../I18N', 'en_GB', ['global2']);
         $str = 'HELLO_USERNAME';
         $translated = 'Hello User!';
         $this->assertEquals($translated, $translator->translate($str, [
             'username' => 'User',
         ]));
-        $translator = new iwalkalone\Translator(['en_GB', 'en_US', 'ca_ES', 'es_ES'], 'es_ES', __DIR__.'/../../I18N', 'ca_ES');
+        $translator = new iwalkalone\Translator(['en_GB', 'en_US', 'ca_ES', 'es_ES'], 'es_ES', __DIR__.'/../../I18N', 'ca_ES', ['global2']);
         $str = 'HELLO_USERNAME';
         $translated = 'Hola User!';
         $this->assertEquals($translated, $translator->translate($str, [
@@ -47,7 +47,7 @@ class translatorTest extends \Codeception\Test\Unit
 
     public function testTranslationMultipleLanguages()
     {
-        $translator = new iwalkalone\Translator(['en_GB', 'en_US', 'ca_ES', 'es_ES'], 'es_ES', __DIR__.'/../../I18N', 'en_GB');
+        $translator = new iwalkalone\Translator(['en_GB', 'en_US', 'ca_ES', 'es_ES'], 'es_ES', __DIR__.'/../../I18N', 'en_GB', ['global2']);
         $str = 'HELLO_USERNAME';
         $translated = 'Hello User!';
         $this->assertEquals($translated, $translator->translate($str, [
@@ -63,5 +63,15 @@ class translatorTest extends \Codeception\Test\Unit
         $this->assertEquals($translated, $translator->translate($str, [
             'username' => 'User',
         ]));
+    }
+
+    public function testMultipleDomains()
+    {
+        $translator = new iwalkalone\Translator(['en_GB', 'en_US', 'ca_ES', 'es_ES'], 'es_ES', __DIR__.'/../../I18N', 'es_ES', ['global2']);
+        $str = 'BYE_USERNAME';
+        $translated = '¡Adiós User!';
+        $this->assertEquals($translated, $translator->translate($str, [
+            'username' => 'User',
+        ], 'global2'));
     }
 }

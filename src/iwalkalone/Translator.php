@@ -27,7 +27,7 @@ class Translator
     /**
      * Creates an instance with specified language or detects from browser
      */
-    public function __construct(array $available_languages, $default_language, $directory = '.', $language = null)
+    public function __construct(array $available_languages, $default_language, $directory = '.', $language = null, $extra_domains = [])
     {
         $this->setAvailableLanguages($available_languages);
         $this->setDefaultLanguage($default_language);
@@ -46,6 +46,10 @@ class Translator
         $result = bindtextdomain("global", $directory);
         $result = bind_textdomain_codeset("global", "UTF-8");
         $result = textdomain("global");
+        foreach ($extra_domains as $domain) {
+            $result = bindtextdomain($domain, $directory);
+            $result = bind_textdomain_codeset($domain, "UTF-8");
+        }
     }
 
     /**
@@ -88,6 +92,7 @@ class Translator
         $this->selected_language = $language;
         $result = putenv('LANGUAGE='.$this->selected_language.'.utf8');
         $result = setlocale(LC_ALL, $this->selected_language.'.utf8');
+        $result = setlocale(LC_MESSAGES, $this->selected_language.'.utf8');
     }
 
     /**
@@ -107,9 +112,9 @@ class Translator
     /**
      * It translates a string with selected language and replaces keys for values using $placeholders
      */
-    public function translate($str, $placeholders = null)
+    public function translate($str, $placeholders = null, $domain = 'global')
     {
-        $message = gettext($str);
+        $message = dgettext($domain, $str);
         if ($placeholders && is_array($placeholders)) {
             foreach ($placeholders as $key => $value) {
                 $message = str_replace('%'.$key.'%', $value, $message);
