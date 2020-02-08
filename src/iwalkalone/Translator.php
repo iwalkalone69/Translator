@@ -25,6 +25,11 @@ class Translator
     protected $selected_language = null;
 
     /**
+     * Selected domain
+     */
+    protected $selected_domain = 'global';
+
+    /**
      * Creates an instance with specified language or detects from browser
      */
     public function __construct(array $available_languages, $default_language, $directory = '.', $language = null, $extra_domains = [])
@@ -96,6 +101,14 @@ class Translator
     }
 
     /**
+     * Selects a new domain
+     */
+    public function setDomain($domain)
+    {
+        $this->selected_domain = $domain;
+    }
+
+    /**
      * It detects language from browser headers
      */
     protected function detectLanguage()
@@ -112,9 +125,10 @@ class Translator
     /**
      * It translates a string with selected language and replaces keys for values using $placeholders
      */
-    public function translate($str, $placeholders = null, $domain = 'global')
+    public function translate($str, $placeholders = null, $domain = null)
     {
-        $message = dgettext($domain, $str);
+        if ($domain) $this->selected_domain = $domain;
+        $message = dgettext($this->selected_domain, $str);
         if ($placeholders && is_array($placeholders)) {
             foreach ($placeholders as $key => $value) {
                 $message = str_replace('%'.$key.'%', $value, $message);
