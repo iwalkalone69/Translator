@@ -58,6 +58,14 @@ class Translator
     }
 
     /**
+     * Gets available languages
+     */
+    public function getAvailableLanguages()
+    {
+        return $this->available_languages;
+    }
+
+    /**
      * Sets available languages
      */
     public function setAvailableLanguages(array $available_languages)
@@ -66,11 +74,27 @@ class Translator
     }
 
     /**
+     * Gets the default language
+     */
+    public function getDefaultLanguage()
+    {
+        return $this->default_language;
+    }
+
+    /**
      * Sets the default language if specified or detected are not available
      */
     public function setDefaultLanguage($default_language)
     {
-	$this->default_language = $default_language;
+        $this->default_language = $default_language;
+    }
+
+    /**
+     * Gets directory where translations are
+     */
+    public function getDirectory()
+    {
+        return $this->directory;
     }
 
     /**
@@ -78,7 +102,7 @@ class Translator
      */
     public function setDirectory($directory)
     {
-	$this->directory = $directory;
+        $this->directory = $directory;
     }
 
     /**
@@ -98,6 +122,14 @@ class Translator
         $result = putenv('LANGUAGE='.$this->selected_language.'.utf8');
         $result = setlocale(LC_ALL, $this->selected_language.'.utf8');
         $result = setlocale(LC_MESSAGES, $this->selected_language.'.utf8');
+    }
+
+    /**
+     * Gets current selected domain
+     */
+    public function getDomain()
+    {
+        return $this->selected_domain;
     }
 
     /**
@@ -127,8 +159,10 @@ class Translator
      */
     public function translate($str, $placeholders = null, $domain = null)
     {
-        if ($domain) $this->selected_domain = $domain;
-        $message = dgettext($this->selected_domain, $str);
+        if ($domain) {
+            $this->setDomain($domain);
+        }
+        $message = dgettext($this->getDomain(), $str);
         if ($placeholders && is_array($placeholders)) {
             foreach ($placeholders as $key => $value) {
                 $message = str_replace('%'.$key.'%', $value, $message);
