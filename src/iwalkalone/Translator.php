@@ -27,6 +27,11 @@ class Translator
     /**
      * Selected domain
      */
+    protected $default_domain = 'global';
+
+    /**
+     * Selected domain
+     */
     protected $selected_domain = 'global';
 
     /**
@@ -133,6 +138,14 @@ class Translator
     }
 
     /**
+     * Sets default domain
+     */
+    public function setDefaultDomain($domain)
+    {
+        $this->default_domain = $domain;
+    }
+
+    /**
      * Selects a new domain
      */
     public function setDomain($domain)
@@ -157,12 +170,19 @@ class Translator
     /**
      * It translates a string with selected language and replaces keys for values using $placeholders
      */
-    public function translate($str, $placeholders = null, $domain = null)
+    public function translate($str, $placeholders = null, $domain = null, $language = null)
     {
-        if ($domain) {
-            $this->setDomain($domain);
-        }
+        $this->setDomain($domain ? $domain : $this->default_domain);
+        if ($language) $this->setLanguage($language);
+	else $this->detectLanguage();
+
         $message = dgettext($this->getDomain(), $str);
+
+        // Fallback to default language
+        if ($message == '' && $this->getLanguage() != $this->getDefaultLanguage()) {
+            return $this->translate($str, $placeholders, $domain, $this->getDefaultLanguage());
+        }
+
         if ($placeholders && is_array($placeholders)) {
             foreach ($placeholders as $key => $value) {
                 $message = str_replace('%'.$key.'%', $value, $message);
