@@ -35,6 +35,11 @@ class Translator
     protected $selected_domain = 'global';
 
     /**
+     * Folder where translations are located
+     */
+    protected $directory = '.';
+
+    /**
      * Creates an instance with specified language or detects from browser
      */
     public function __construct(array $available_languages, $default_language, $directory = '.', $language = null, $extra_domains = [])
